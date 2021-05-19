@@ -18,6 +18,5 @@ out/
 .swp
 
 # Runtime
-*.json
 !ami.json
 *.log

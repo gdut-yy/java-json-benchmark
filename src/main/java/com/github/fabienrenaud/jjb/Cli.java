@@ -11,6 +11,7 @@ import io.airlift.airline.Command;
 import io.airlift.airline.Help;
 import io.airlift.airline.Option;
 import io.airlift.airline.OptionType;
+import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
@@ -104,8 +105,13 @@ public final class Cli {
             }
 
             File config = Config.save(this);
-
-            Options opt = b.build();
+            String fileName = String.format(Locale.ENGLISH, "output/%s-%s-%s-%s.json",
+                    dataType, mode.toLowerCase(Locale.ENGLISH),
+                    numberOfPayloads, sizeOfEachPayloadInKb);
+            Options opt = b
+                    .result(fileName)
+                    .resultFormat(ResultFormatType.JSON)
+                    .build();
             try {
                 new Runner(opt).run();
             } catch (RunnerException ex) {
